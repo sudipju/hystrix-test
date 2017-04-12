@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+    <parent>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-parent</artifactId>
+	    <version>1.5.2.RELEASE</version>
+	    <relativePath/>
+    </parent>
+
+	<groupId>se.bgc.hystrix</groupId>
+	<artifactId>hystrix-base</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Hystrix Base</name>
+	<description>Hystrix Test Manager</description>
+
+	<properties>
+		<!-- Project versions -->	
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<ibm.mq.version>8.0.0.6</ibm.mq.version>
+		<ibm.disthub2.dhbcore>7.1</ibm.disthub2.dhbcore>
+		<swish.libs.version>origin_develop-SNAPSHOT</swish.libs.version>
+		<commons.io.version>2.5</commons.io.version>
+		<org.ehcache.version>3.3.0</org.ehcache.version>
+		
+		
+	
+		<!-- Build plugins -->	
+		<maven.clean.plugin.version>3.0.0</maven.clean.plugin.version>
+       	<maven.resources.plugin.version>3.0.2</maven.resources.plugin.version>
+       	<maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
+       	<maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
+       	
+       	<!-- ** Git properties ** -->
+        <git.url>ssh://git@github.com:sudipju/hystrix-test.git</git.url>
+
+        <!-- ** Git properties ** -->
+    </properties>
+	
+	<build>
+        <pluginManagement>
+            <plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>${maven.clean.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>${maven.resources.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven.compiler.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${maven.surefire.plugin.version}</version>
+				</plugin>
+       		</plugins>
+        </pluginManagement>
+	</build>
+
+	<modules>
+		<module>bank-client</module>
+		<module>bank-common</module>
+		<module>bank-service</module>
+   	</modules>
+	
+</project>
