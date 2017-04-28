@@ -2,7 +2,7 @@ target/
 bin/
 !.mvn/wrapper/maven-wrapper.jar
 .checkstyle
-.DSStyle
+.DS_Store
 
 ### STS ###
 .apt_generated
