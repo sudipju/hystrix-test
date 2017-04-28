@@ -14,6 +14,7 @@ import rx.Observable;
 import rx.functions.Func2;
 import swish.hystrix.bank.common.BankValidationRequest;
 import swish.hystrix.bank.common.BankValidationResponse;
+import swish.hystrix.validator.circuitbreaker.JmsObservableCommand;
 import swish.hystrix.validator.client.BankServiceClient;
 import swish.hystrix.validator.client.BankServiceClientWrapper;
 
@@ -25,7 +26,7 @@ public class ValidationService {
 	private long restTimeout;
 	
 	@Autowired
-	private BankServiceClientWrapper bankService;
+	private BankServiceClient bankService;
 
 	@Autowired
 	private IdService idService;
@@ -40,19 +41,29 @@ public class ValidationService {
 			)
 	public DeferredResult<ValidationResponse> validate(@RequestBody ValidationRequest request) {
 		DeferredResult<ValidationResponse> deferred = new DeferredResult<>(restTimeout);
-		Observable<BankValidationResponse> debetObs = sendDebetRequest(request);
 		Observable<BankValidationResponse> creditObs = sendCreditRequest(request);
-		Observable<ValidationResponse> obs = Observable.zip(debetObs, creditObs, 
+		Observable<BankValidationResponse> debitObs = sendDebetRequest(request);
+		
+		/*
+		Observable<ValidationResponse> obs = Observable.zip(creditObs, debitObs, 
 				(debet,credit) -> createResponse(debet,credit));
-
 		obs.subscribe(r -> deferred.setResult(r), 
 				      e -> deferred.setErrorResult(e));
+		*/
+	
+		ResponseAggregator<BankValidationResponse, BankValidationResponse> aggr = new ResponseAggregator<>(
+				(debit,credit) -> deferred.setResult(createResponse(debit,credit)), 
+				e -> deferred.setErrorResult(e));
+		debitObs.subscribe(result -> aggr.complete1(result), err -> aggr.error(err));
+		creditObs.subscribe(result -> aggr.complete2(result), err -> aggr.error(err));
 		return deferred;
 	}
 
 	private Observable<BankValidationResponse> sendDebetRequest(ValidationRequest request) {
 		BankValidationRequest bvr = mapDebetRequest(request);
-		return bankService.sendValidation(bvr);
+		return 
+				new JmsObservableCommand<BankValidationResponse>(bvr.getBankId(), 
+						() -> bankService.sendValidation(bvr)).observe();
 	}
 
 	private BankValidationRequest mapDebetRequest(ValidationRequest request) {
@@ -63,7 +74,9 @@ public class ValidationService {
 
 	private Observable<BankValidationResponse> sendCreditRequest(ValidationRequest request) {
 		BankValidationRequest bvr = mapCreditRequest(request);
-		return bankService.sendValidation(bvr);
+		return 
+			new JmsObservableCommand<BankValidationResponse>(bvr.getBankId(), 
+					() -> bankService.sendValidation(bvr)).observe();
 	}
 
 	private BankValidationRequest mapCreditRequest(ValidationRequest request) {
@@ -74,7 +87,14 @@ public class ValidationService {
 
 	private ValidationResponse createResponse(BankValidationResponse debet, BankValidationResponse credit) {
 		ValidationResponse response = new ValidationResponse();
-		response.setStatus(debet.getResponse());
+		String creditResponse = credit.getResponse();
+		String debetResponse = debet.getResponse();
+		if ("OK".equals(creditResponse) && "OK".equals(debetResponse)) {
+			response.setStatus("OK");
+		} else {
+			response.setStatus("ERROR");
+		}
+		log.info("Creating response:" + debet.getRequestId() + " " + credit.getRequestId());
 		return response;
 	}
 

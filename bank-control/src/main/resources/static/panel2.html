@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" >
+
+  </head>
+  <body>
+<div class="container">
+       <div class="row">
+
+<div class="col">
+
+<div class="card">
+  <h3 class="card-header">Ciruit breaker control</h3>
+  <div class="card-block">
+<div class="container">
+<div class="row">
+    <div class="col">
+      BANK1
+    </div>
+    <div class="col">
+<div class="btn-group" data-toggle="buttons">
+  <label class="btn btn-primary" aria-pressed="true">
+    <input type="radio" name="options" id="option1" autocomplete="off" checked=""> DEFAULT
+  </label>
+  <label class="btn btn-primary active" aria-pressed="true">
+    <input type="radio" name="options" id="option2" autocomplete="off"> OPEN
+  </label>
+  <label class="btn btn-primary" aria-pressed="true">
+    <input type="radio" name="options" id="option3" autocomplete="off"> CLOSE
+  </label>
+</div>
+    </div>
+    <div class="col">
+      1 of 3
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+</div></div>
+</div>
+
+<div style="margin-top: 12px;"></div>
+
+<div class="container">
+<div class="row">
+<div class="col">
+  <div class="card">
+  <h3 class="card-header">Bank process control</h3>
+  <div class="card-block">
+  <div class="container">
+  
+  <div class="row">
+    <div class="col">
+      BANK1
+    </div>
+    <div class="col">
+       <div class="btn-group btn-toggle">
+        <button class="btn btn-xs btn-default btn-success-toggle">ON</button>
+        <button class="btn btn-xs btn-danger active btn-danger-toggle">OFF</button>
+        </div>
+   </div>
+    <div class="col">
+      <label for="bank1-error">Error rate</label>
+      <input id="bank1-error" type="range" min="0" max="100" value="0"/>
+      <span id="newValue" value="0">0</span>
+
+    </div>
+    <div class="col">
+      <label for="bank1-speed">Speed</label>
+      <input id="bank1-speed" type="range"/>
+    </div>
+  </div>
+  
+  </div>
+  </div>
+</div>
+</div>
+
+
+
+   <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="/bankpanel.js"></script>
+
+</body></html>

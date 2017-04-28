@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+    <!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" />
+
+  </head>
+  <body>
+<div class="container">
+       <div class="row">
+
+<div class="col">
+
+<div class="card">
+  <h3 class="card-header">Circuit breaker control</h3>
+  <div class="card-block">
+<div class="container">
+
+<div class="row" th:each="b : ${banks}" th:attr="id=${b.name + '-cb'}" style="margin-top: 6px;">
+    <div class="col" th:text="${b.name}">
+    </div>
+    <div class="col">
+    <button type="button" class="btn btn-secondary cb-disable active" th:attr="data-bank-id=${b.name}" data-toggle="button" data-state="1" aria-pressed="false" autocomplete="off">
+  		Enabled
+	</button>
+	</div>
+    <div class="col">
+<div th:attr="id=${b.name + 'cb-buttons'}" class="btn-group" data-toggle="buttons">
+  <label class="btn btn-secondary" aria-pressed="true">
+    <input type="radio" class="bank-cb" th:attr="data-bank-id=${b.name},name=${b.name + '-options'},id=${b.name + '-option1'}" autocomplete="off" value="FC"> CLOSED </input>
+  </label>
+  <label class="btn btn-secondary active" aria-pressed="true">
+    <input type="radio" class="bank-cb" th:attr="data-bank-id=${b.name},name=${b.name + '-options'},id=${b.name + '-option2'}" autocomplete="off" checked="" value=""> ACTIVE</input>
+  </label>
+  <label class="btn btn-secondary" aria-pressed="true">
+    <input type="radio" class="bank-cb" th:attr="data-bank-id=${b.name},name=${b.name + '-options'},id=${b.name + '-option3'}" autocomplete="off" value="FO"> OPEN</input>
+  </label>
+</div>
+    </div>
+    <div class="col">
+    <!--
+      <label th:attr="for=${b.name + '-cb-timeout'}">Timeout</label>
+      <input th:attr="id=${b.name + '-cb-timeout'}" type="range" min="0" max="60" value="5"/>
+      <span th:attr="id=${b.name + '-cb-timeout-value'}" value="5">5</span>
+      -->
+  	</div>
+</div>
+
+</div>
+</div>
+</div>
+
+</div></div>
+</div>
+
+<div style="margin-top: 12px;"></div>
+
+<div class="container">
+<div class="row">
+
+<div class="col">
+  <div class="card">
+  <h3 class="card-header">Bank process control</h3>
+  <div class="card-block">
+  <div class="container">
+  
+  <div class="row" th:each="b : ${banks}" th:attr="id=${b.name}" style="margin-top: 6px;">
+    <div class="col" th:text="${b.name}">
+    </div>
+    <div class="col">
+       <div class="btn-group btn-toggle" th:attr="data-id=${b.id}">
+        <button class="btn btn-xs btn-success active btn-success-toggle">ON</button>
+        <button class="btn btn-xs btn-default btn-danger-toggle">OFF</button>
+        </div>
+   </div>
+    <div class="col">
+      <label th:attr="for=${b.name + '-error'}">Errors</label>
+      <input type="range" min="0" max="100" value="0" th:attr="id=${b.name + '-error'}" class="error-rate" />
+      <span th:attr="id=${b.name + '-error-value'}" value="0">0</span>%
+    </div>
+    <div class="col">
+      <label th:attr="for=${b.name + '-speed'}">Delay</label>
+      <input th:attr="id=${b.name + '-speed'}" type="range" min="0" max="60" value="0"/>
+      <span th:attr="id=${b.name + '-speed-value'}" value="0">0</span>s
+    </div>
+  </div>
+  
+  </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+
+
+   <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="/bankpanel.js"></script>
+
+</body></html>
+

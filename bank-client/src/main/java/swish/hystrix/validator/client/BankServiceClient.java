@@ -90,7 +90,7 @@ public class BankServiceClient {
 	private void sendRequest(BankValidationRequest request, BankValidationRequestListener listener) {
 		String destination = resolveDestination(request.getBankId());
 		cache.putActiveRequest(new ActiveRequest(request,listener));
-		this.sendJmsRequest(destination, request, correlationID);
+		sendJmsRequest(destination, request, correlationID);
 	}
 
 	private String resolveDestination(String bankId) {

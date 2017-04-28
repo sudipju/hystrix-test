@@ -1,6 +1,7 @@
 package swish.hystrix;
 
 import javax.jms.ConnectionFactory;
+import javax.jms.Session;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +26,7 @@ public class JmsConfiguration {
         //factory.setTransactionManager(transactionManager);
         factory.setConcurrency("5-10");
         //factory.setSessionAcknowledgeMode(Session.CLIENT_ACKNOWLEDGE);
-        //factory.setSessionTransacted(true);
+        factory.setSessionTransacted(true);
         return factory;
     }
  
@@ -35,22 +36,4 @@ public class JmsConfiguration {
         return jmsTemplate;
     }
 	
-	/*
-	@Bean
-    public ConnectionFactory connectionFactory() {
-        MQXAConnectionFactory factory = null;
-        try {
-            factory = new MQXAConnectionFactory();
-            factory.setHostName(properties.getHost());
-            factory.setPort(properties.getPort());
-            factory.setQueueManager(properties.getQueueManager());
-            factory.setChannel(properties.getChannel());
-            factory.setTransportType(WMQConstants.WMQ_CM_CLIENT);
-        } catch (JMSException e) {
-            throw new RuntimeException(e);
-        }
- 
-        return factory;
-    }
-    */
 }

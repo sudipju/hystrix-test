@@ -25,14 +25,15 @@ public class BankJmsListener {
 	
 	@JmsListener(destination = "${jms.queue.in}", containerFactory = "defaultJmsListenerContainerFactory")
     public void onMessage(TextMessage message) throws JMSException {
-        log.info("onMessage" + message);
-        
+        if (Boolean.getBoolean("bank.service.disabled")) {
+        	throw new RuntimeException("service disabled");
+        }
         try {
         	BankValidationRequest bvr = BankValidationRequestConverter.decode(message.getText());
             BankValidationResponse reply = bankService.validatePayment(bvr);
             Destination replyTo = message.getJMSReplyTo();
             sendReply(replyTo, toMessage(reply), message.getJMSCorrelationID());
-        } catch (JMSException e) {
+        } catch (Exception e) {
             log.error("Cannot consume message", e);
         }
     }
