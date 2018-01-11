@@ -27,8 +27,7 @@ jobs:
       script:
       - echo "Deploy To Github..."
       file_glob: true
-      file:
-      - **/target/*.jar
+      file: "**/target/*.jar"
       skip_cleanup: true
       on:
         repo: sudipju/hystrix-test
