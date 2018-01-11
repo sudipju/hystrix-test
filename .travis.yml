@@ -28,8 +28,7 @@ jobs:
       - echo "Deploy To Github..."
       file_glob: true
       file:
-      - server/target/server-*.jar
-      - README.md
+      - **/target/*.jar
       skip_cleanup: true
       on:
         repo: sudipju/hystrix-test
