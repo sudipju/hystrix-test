@@ -1,0 +1,41 @@
+language: java
+stages:
+- buildCode
+- createTag
+- deployToGitHub
+jobs:
+  include:
+  - stage: buildCode
+    script:
+    - echo "Building Code..."
+    - jdk_switcher use oraclejdk8
+    - mvn clean install -T4C
+  - stage: createTag
+    if: branch = master
+    script:
+    - echo "Creating Tag..."
+    - git config --local user.name ${BUILD_USER}
+    - git config --local user.email ${BUILD_USER_EMAIL}
+    - git tag "build-$TRAVIS_BRANCH-$(date +'%Y-%m-%d')-$TRAVIS_BUILD_NUMBER"
+    - git push --tags --quiet https://${GITHUB_PERSONAL_ACCESS_TOKEN}@github.com/sudipju/hystrix-test.git
+      > /dev/null 2>&1
+  - stage: deployToGitHub
+    deploy:
+      provider: releases
+      api_key:
+        secure: "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+      script:
+      - echo "Deploy To Github..."
+      file_glob: true
+      file:
+      - server/target/server-*.jar
+      - README.md
+      skip_cleanup: true
+      on:
+        repo: sudipju/hystrix-test
+        tags: true
+env:
+  global:
+  - BUILD_USER="Travis CI"
+  - BUILD_USER_EMAIL="builds@travis-ci.com"
+  - secure: OD5M+7puEwZw03myOoUg5HfhKMJF0xXWxRW5HqzXrxPJoQwGaKw3+YxSfIeN8pweV3yK9BqSRQ5TP7sNAWFeL4RrTxe8B25uEenvvTrWyv9jRfoYMsW1BVi60yAOyDmF/9GI7CvhfbiSh395YoRXz8duarg+lJtc/jbmtHYb7DonTI7m2qcVUlSgkK4Z6EWG9MdQ9vNTCPPKa1DEM3fcuLZPJAmAkPrG4vFHRbUEElywoW6T9YIXSX8TV+JXXLFEHsA59L6RTtpIN3Stuqck5sPvMHf3r5a0pbeji66ImzTYrRcAeijunXCo3M/wIQXGhNu/Eu4CT4Ge8yfy5d4fDQ5jSVjjMwBCGxTkVS3pd1N8k/+rUmoBS6WI6R8fCvVDLVpgulSkRzCfK1TnJeYcdAZ75PW/vEeNE5nGA3WJQd4Us6bjbmAxb/Vf8TTuaBzVt9HgTKILsdKMSqQe5YsXIP23uP3mg/NoGpaC+qNJiZfee1s+IDWUzPoz3Fd2+BwTf/jGhVBvpzpbHU83IGIJqQwEGye2ZTUZQ2Mo3PxIfxVXtQyShcZjMITedfTWTgocxlyDnLOLFm4A/tbvUZB5QnhWS00Dwa6h3GDhBT/TcXGk5AYHS4Kps8a+gFQadkQJdtn/OvuMXtoX6UvGLbIt4V+5mRmGV2C/9YNC4E24nc0=
