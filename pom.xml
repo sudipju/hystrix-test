@@ -10,7 +10,7 @@
 	    <relativePath/>
     </parent>
 
-	<groupId>se.bgc.hystrix</groupId>
+	<groupId>hystrix.test</groupId>
 	<artifactId>hystrix-base</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
